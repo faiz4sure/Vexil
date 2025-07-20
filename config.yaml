@@ -1,0 +1,187 @@
+# ====================================================================
+# VEXIL SELFBOT CONFIGURATION
+# ====================================================================
+# WARNING: Selfbots violate Discord's Terms of Service
+# Use at your own risk - accounts may be terminated
+#
+# For help getting your token, see: docs/GET_TOKEN.md
+# For support: https://discord.gg/pREvj3cEvY
+# ====================================================================
+
+# ====================================================================
+# CORE SELFBOT SETTINGS
+# ====================================================================
+selfbot:
+  # Your Discord account token (REQUIRED)
+  # See docs/GET_TOKEN.md for instructions on how to get this
+  # NEVER share your token with anyone!
+  token: "YOUR_TOKEN_HERE"
+
+  # Command prefix - what you type before commands
+  # Example: if prefix is "+", you use "+help"
+  prefix: "+"
+
+  # Your Discord status (online, idle, dnd, invisible)
+  # dnd = Do Not Disturb (recommended for selfbots)
+  status: "dnd"
+
+  # Toggle the DM logs on console
+  dm_logs: false
+
+# ====================================================================
+# RELATIONSHIP LOGGING SETTINGS
+# ====================================================================
+relationship_logs:
+  # Enable logging of friend/relationship changes
+  enabled: true
+
+  # Discord webhook URL for logging (optional)
+  # Leave empty if you don't want webhook logging
+  webhook_url: ""
+
+  # Special users to monitor closely (user IDs)
+  # Add Discord user IDs of people you want to track
+  special_users:
+    - "123456789012345678" # Replace with actual user IDs
+
+# ====================================================================
+# DEBUG AND DEVELOPMENT
+# ====================================================================
+debug_mode:
+  # Enable debug logging (shows detailed information)
+  # Set to true only when troubleshooting issues
+  enabled: false
+
+# ====================================================================
+# RICH PRESENCE (ACTIVITY STATUS)
+# ====================================================================
+rich_presence:
+  # Enable custom rich presence/activity status
+  enabled: true
+
+  # Default rich presence settings
+  default:
+    # Discord application ID for rich presence
+    application_id: "1306468377539379241"
+
+    # Activity name (what shows as "Playing ...")
+    name: "Vexil Selfbot"
+
+    # Activity details (smaller text)
+    details: "Summoning Silence"
+
+    # Activity state (bottom text)
+    state: "github.com/faiz4sure"
+
+    # Activity type (PLAYING, WATCHING, LISTENING, STREAMING, COMPETING)
+    type: "PLAYING"
+
+    # Rich presence images
+    assets:
+      large_image: "vexil" # Large image key
+      large_text: "Vexil" # Large image hover text
+      small_image: "thunder" # Small image key
+      small_text: "github.com/faiz4sure" # Small image hover text
+
+# ====================================================================
+# AI INTEGRATION
+# ====================================================================
+ai:
+  # Groq API key for AI features (optional)
+  # Its totally free 100%
+  # Get your free API key from: https://console.groq.com/
+  groq_api_key: ""
+
+# ====================================================================
+# VOICE CHANNEL SETTINGS
+# ====================================================================
+vc_command:
+  # Auto-mute when joining voice channels
+  mute: true
+
+  # Auto-deafen when joining voice channels
+  deafen: true
+
+  # Automatically reconnect if disconnected from voice
+  auto_reconnect: true
+
+  # Delay before attempting reconnection (seconds)
+  reconnect_delay: 5
+
+  # Maximum reconnection attempts
+  max_attempts: 3
+
+# ====================================================================
+# CLIENT PROPERTIES (SPOOFING)
+# ====================================================================
+client_properties:
+  # Don't change this unless you know what you are doing
+  browser: "Discord iOS"
+
+# ====================================================================
+# SERVER NUKE SETTINGS (DANGEROUS)
+# ====================================================================
+nuke:
+  # Message to send when nuking a server
+  nuke_message: "@everyone Vexil was here! https://github.com/faiz4sure/Vexil"
+
+  # New server name after nuking
+  server_name: "Vexil owns this server!"
+
+  # Channel names to create after nuking
+  channels:
+    - "Nuked by self"
+    - "crushed"
+    - "destroyed"
+
+# ====================================================================
+# API SETTINGS
+# ====================================================================
+api:
+  # Don't change this unless you know what you are doing
+  version: "v10"
+
+# ====================================================================
+# CRYPTOCURRENCY ADDRESSES (OPTIONAL)
+# ====================================================================
+crypto:
+  # Litecoin address for donations
+  ltc: ""
+
+  # Bitcoin address for donations
+  btc: ""
+
+  # Solana address for donations
+  sol: ""
+
+# ====================================================================
+# NSFW CONTENT SETTINGS
+# ====================================================================
+nsfw:
+  # Enable NSFW commands (18+ content)
+  # Set to true to enable NSFW commands
+  enabled: false
+
+# ====================================================================
+# BAD PHRASES/INSULTS (TROLL COMMANDS)
+# ====================================================================
+bad_phrases:
+  # Enable bad phrase/insult commands for troll features
+  # WARNING: Contains extremely offensive language - use responsibly
+  # These phrases are used by commands like +badreply for trolling
+  enabled: true
+
+  # List of offensive phrases for troll commands
+  # Each phrase should be enclosed in double quotes
+  # Add or remove phrases as needed (keep it reasonable)
+  phrases:
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
+    - ""
