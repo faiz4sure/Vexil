@@ -359,6 +359,19 @@ npm run lint
 - 🔄 **Graceful** shutdown handling
 - 📱 **Cross-platform** compatibility
 
+## 📊 **Development Statistics**
+
+<div align="center">
+
+| 📈 **Metric** | 📊 **Value** |
+|:---:|:---:|
+| **⏱️ Total Development Time** | **2.5 Months** |
+| **📝 Lines of Code** | **19,065** |
+| **🎯 Commands Implemented** | **120+** |
+| **📁 Files Created** | **100+** |
+
+</div>
+
 ---
 
 ## 🙏 **Credits & Acknowledgments**
