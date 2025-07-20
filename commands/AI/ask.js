@@ -9,7 +9,7 @@ export default {
     type: 'both',
     permissions: ['SendMessages'],
     cooldown: 5,
-    async execute(message, args, client) {
+    async execute(client, message, args) {
         const query = args.join(' ');
 
         if (!query) {
