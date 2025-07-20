@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node --inspect index.js",
+    "lint": "echo \"Checking code style...\" && node -c index.js && echo \"✅ Code syntax is valid!\""
   },
   "keywords": [],
   "author": "github.com/faiz4sure",

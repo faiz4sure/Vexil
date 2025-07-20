@@ -195,13 +195,13 @@ node index.js
 <div align="center">
 
 ### 🖥️ **Startup Banner**
-![Startup](https://via.placeholder.com/600x300/0099FF/FFFFFF?text=Vexil+Startup+Banner)
+![Startup](https://i.postimg.cc/MHCtLvJW/Screenshot-2025-07-20-221135.png)
 
 ### 📱 **Help Menu**
-![Help Menu](https://via.placeholder.com/600x400/00FFFF/000000?text=Interactive+Help+Menu)
+![Help Menu](https://i.postimg.cc/1X6cP51M/Screenshot-2025-07-20-221607.png)
 
 ### ⚡ **Command Execution**
-![Commands](https://via.placeholder.com/600x350/FF6B6B/FFFFFF?text=Lightning+Fast+Commands)
+![Commands](https://i.postimg.cc/6pn6gSnw/Screenshot-2025-07-20-221659.png)
 
 </div>
 
