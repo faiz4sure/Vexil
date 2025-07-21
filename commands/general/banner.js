@@ -6,7 +6,7 @@ export default {
     category: 'general',
     type: 'both',
     permissions: ['SendMessages'],    cooldown: 3,
-    async execute(message, args, client) {
+    async execute(client, message, args) {
         let targetUser = null;
         let targetGuild = null;
         let bannerName = "";

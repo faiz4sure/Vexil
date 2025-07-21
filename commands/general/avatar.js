@@ -7,7 +7,7 @@ export default {
     type: 'both',
     permissions: ['SendMessages'],
     cooldown: 3,
-    async execute(message, args, client) {
+    async execute(client, message, args) {
         let target = message.author; // Default to message author
         let avatarURL = null;
         let avatarName = "Your";
