@@ -67,7 +67,7 @@ function displayBanner() {
     console.log(coolGradient(asciiArt));
     console.log("\n");
     console.log(chalk.cyan("> ") + chalk.gray("A powerful Discord selfbot"));
-    console.log(chalk.cyan("> ") + chalk.gray("Support server: https://discord.gg/pREvj3cEvY"));
+    console.log(chalk.cyan("> ") + chalk.gray("Support server: https://discord.gg/b3hZG4R7Mf"));
     console.log(
       chalk.cyan("> ") +
         chalk.gray("Use at your own risk - selfbots violate Discord's ToS")

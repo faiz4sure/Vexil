@@ -360,7 +360,7 @@ bad_phrases:
 
 ## 🆘 **Need Help?**
 
-- **Discord Server**: [Join our support server](https://discord.gg/pREvj3cEvY)
+- **Discord Server**: [Join our support server](https://discord.gg/b3hZG4R7Mf)
 - **Token Guide**: [GET_TOKEN.md](GET_TOKEN.md)
 - **Contact**: `faiz4sure` on Discord
 

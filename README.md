@@ -6,13 +6,14 @@
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=00FFFF&center=true&vCenter=true&width=600&lines=Summoning+Silence...;A+Powerful+Discord+Selfbot;Multifunctional+%26+Feature-Rich;Built+with+ES6+" alt="Typing SVG" />
 
-[![Discord](https://img.shields.io/discord/1234567890123456789?color=7289da&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/pREvj3cEvY)
+[![Discord](https://img.shields.io/discord/1234567890123456789?color=7289da&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/b3hZG4R7Mf)
 [![GitHub stars](https://img.shields.io/github/stars/faiz4sure/Vexil?color=yellow&style=for-the-badge)](https://github.com/faiz4sure/Vexil/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/faiz4sure/Vexil?color=green&style=for-the-badge)](https://github.com/faiz4sure/Vexil/network)
 [![GitHub issues](https://img.shields.io/github/issues/faiz4sure/Vexil?color=red&style=for-the-badge)](https://github.com/faiz4sure/Vexil/issues)
 [![License](https://img.shields.io/github/license/faiz4sure/Vexil?color=blue&style=for-the-badge)](LICENSE)
 
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Electron](https://img.shields.io/badge/Electron-2B2E3A?style=for-the-badge&logo=electron&logoColor=9FEAF9)](https://www.electronjs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 </div>
@@ -52,6 +53,25 @@
 ---
 
 ## 🚀 **Quick Start**
+
+### 🎯 **Option 1: GUI Release (Recommended for Windows)**
+
+**✨ Easy Installation - No Technical Knowledge Required!**
+
+1. **Go to** this release page [Releases](https://github.com/faiz4sure/Vexil/releases)
+2. **Download** the `.exe` file 
+3. **Run** the `.exe` file - it will guide you through setup interactively
+4. **Enjoy** - No manual configuration needed!
+
+**📋 System Requirements:**
+- **Windows** 10/11
+- **RAM:** Minimum 8GB (2GB+ free memory recommended)
+- **Storage:** >5GB free space
+- **Note:** Restart system after heavy usage for optimal performance
+
+---
+
+### 🛠️ **Option 2: Manual Setup (Advanced Users)**
 
 ### 📋 **Prerequisites**
 
@@ -323,14 +343,14 @@ npm run lint
 
 <div align="center">
 
-[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/pREvj3cEvY)
+[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/b3hZG4R7Mf)
 [![GitHub Issues](https://img.shields.io/badge/GitHub-Report%20Issue-red?style=for-the-badge&logo=github&logoColor=white)](https://github.com/faiz4sure/Vexil/issues)
 
 </div>
 
 ### 💬 **Get Help & Share Ideas**
 
-- 🎮 **Discord Server**: [Join our community](https://discord.gg/pREvj3cEvY) - **I'm waiting for your suggestions for more features!**
+- 🎮 **Discord Server**: [Join our community](https://discord.gg/b3hZG4R7Mf) - **I'm waiting for your suggestions for more features!**
 - 🐛 **Bug Reports & Error Fixing**: I'm available on Discord at our support server for guidance
 - 💡 **Feature Requests**: Share your ideas with me on Discord - I love hearing from users!
 - 📧 **Direct Contact**: `faiz4sure` on Discord

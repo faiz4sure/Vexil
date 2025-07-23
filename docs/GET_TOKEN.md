@@ -251,7 +251,7 @@ selfbot:
 
 ### **Still Having Issues?**
 
-- **Join our support server**: https://discord.gg/pREvj3cEvY
+- **Join our support server**: https://discord.gg/b3hZG4R7Mf
 - **Contact developers**: `faiz4sure` or `marcel4real`
 - **Check GitHub issues**: https://github.com/faiz4sure/Vexil
 
@@ -262,7 +262,7 @@ selfbot:
 ### **Useful Links:**
 
 - **Vexil GitHub**: https://github.com/faiz4sure/Vexil
-- **Support Server**: https://discord.gg/pREvj3cEvY
+- **Support Server**: https://discord.gg/b3hZG4R7Mf
 - **Discord Developer Portal**: https://discord.com/developers/applications
 
 ### **Alternative Methods:**

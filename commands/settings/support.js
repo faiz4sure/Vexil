@@ -20,7 +20,7 @@ export default {
         "> Report bugs, request features, or contribute to the project",
         "> ",
         "> ### 💬 **Support Server**",
-        "> **Discord Server:** https://discord.gg/pREvj3cEvY",
+        "> **Discord Server:** https://discord.gg/b3hZG4R7Mf",
         "> Join our community for help, updates, and discussions",
         "> ",
         "> ### 👨‍💻 **Developers**",

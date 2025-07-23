@@ -476,7 +476,7 @@ export DISCORD_TOKEN="your_token_here"
 
 ### **Need Help?**
 
-- **Discord Server**: https://discord.gg/pREvj3cEvY
+- **Discord Server**: https://discord.gg/b3hZG4R7Mf
 - **GitHub Issues**: https://github.com/faiz4sure/Vexil/issues
 - **Developers**: `faiz4sure` or `marcel4real`
 
