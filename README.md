@@ -215,7 +215,7 @@ node index.js
 <div align="center">
 
 ### 🖥️ **Startup Banner**
-![Startup](https://i.postimg.cc/MHCtLvJW/Screenshot-2025-07-20-221135.png)
+![Startup](https://i.postimg.cc/sgCz2D20/Screenshot-2025-07-23-124243.png)
 
 ### 📱 **Help Menu**
 ![Help Menu](https://i.postimg.cc/1X6cP51M/Screenshot-2025-07-20-221607.png)
