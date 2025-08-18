@@ -7,7 +7,7 @@ export default {
     type: 'both',
     permissions: ['SendMessages'],
     cooldown: 5,
-    async execute(message, args, client) {
+    async execute(client, message, args) {
         const newStatus = args[0] ? args[0].toLowerCase() : null;
         const validStatuses = ['online', 'idle', 'dnd', 'invisible'];
 
