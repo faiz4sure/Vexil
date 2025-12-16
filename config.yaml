@@ -53,37 +53,6 @@ debug_mode:
   enabled: false
 
 # ====================================================================
-# RICH PRESENCE (ACTIVITY STATUS)
-# ====================================================================
-rich_presence:
-  # Enable custom rich presence/activity status
-  enabled: true
-
-  # Default rich presence settings
-  default:
-    # Discord application ID for rich presence
-    application_id: "1306468377539379241"
-
-    # Activity name (what shows as "Playing ...")
-    name: "Vexil Selfbot"
-
-    # Activity details (smaller text)
-    details: "Summoning Silence"
-
-    # Activity state (bottom text)
-    state: "github.com/faiz4sure"
-
-    # Activity type (PLAYING, WATCHING, LISTENING, STREAMING, COMPETING)
-    type: "PLAYING"
-
-    # Rich presence images
-    assets:
-      large_image: "vexil" # Large image key
-      large_text: "Vexil" # Large image hover text
-      small_image: "thunder" # Small image key
-      small_text: "github.com/faiz4sure" # Small image hover text
-
-# ====================================================================
 # AI INTEGRATION
 # ====================================================================
 ai:

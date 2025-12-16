@@ -1,6 +1,6 @@
 import TaskManager from "../../utils/TaskManager.js";
 import RateLimitManager from "../../utils/RateLimitManager.js";
-import { log } from "../../utils/functions.js";
+import { log, hasPermissions } from "../../utils/functions.js";
 import chalk from "chalk";
 
 export default {
@@ -91,7 +91,7 @@ export default {
             member.roles.highest.position < botHighestRolePosition
           ) {
             // Check if bot still has KickMembers permission
-            if (!message.guild.me.permissions.has("KickMembers")) {
+            if (!hasPermissions(message.guild.me, "KickMembers")) {
               log(
                 `Bot lost KickMembers permission during task. Cleaning up task...`,
                 "debug"

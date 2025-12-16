@@ -1,4 +1,4 @@
-import { log } from './functions.js';
+import { log, hasPermissions } from './functions.js';
 import chalk from 'chalk';
 
 /**
@@ -35,10 +35,9 @@ export function canExecuteCommand(command, message, client) {
     // Check permissions if in a server and permissions are required
     if (message.guild && command.permissions && command.permissions.length > 0) {
         const missingPermissions = [];
-        
-        // Check each required permission
+
         for (const permission of command.permissions) {
-            if (!message.member.permissions.has(permission)) {
+            if (!hasPermissions(message.member, permission)) {
                 missingPermissions.push(permission);
             }
         }

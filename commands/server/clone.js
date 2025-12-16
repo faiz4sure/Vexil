@@ -20,7 +20,7 @@
  * @author faiz4sure
  */
 
-import { log } from '../../utils/functions.js';
+import { log, hasPermissions } from '../../utils/functions.js';
 import TaskManager from '../../utils/TaskManager.js';
 import RateLimitManager from '../../utils/RateLimitManager.js';
 
@@ -226,7 +226,7 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
     const missingPermissions = [];
 
     for (const permission of requiredPermissions) {
-      if (!destinationMember.permissions.has(permission)) {
+      if (!hasPermissions(destinationMember, permission)) {
         missingPermissions.push(permission);
       }
     }
@@ -239,7 +239,7 @@ async function validateServerAccess(client, sourceServerId, destinationServerId)
     }
 
     // Check if selfbot has Administrator permission for better results
-    const hasAdministrator = destinationMember.permissions.has('Administrator');
+    const hasAdministrator = hasPermissions(destinationMember, 'Administrator');
     if (!hasAdministrator) {
       log('Warning: Selfbot does not have Administrator permission. Some roles may not be cloned due to hierarchy restrictions.', 'warn');
     }
@@ -604,7 +604,7 @@ async function cloneRoles(destinationGuild, serverStructure, rateLimiter, task, 
         await rateLimiter.execute(async () => {
           // Skip roles that would be higher than selfbot's highest role
           // Only skip if selfbot doesn't have Administrator permission
-          const selfbotHasAdmin = selfbotMember && selfbotMember.permissions.has('Administrator');
+          const selfbotHasAdmin = selfbotMember && hasPermissions(selfbotMember, 'Administrator');
           if (!selfbotHasAdmin && roleData.position >= selfbotHighestPosition) {
             log(`Skipping role ${roleData.name} - position too high (${roleData.position} >= ${selfbotHighestPosition})`, 'warn');
             results.failed++;

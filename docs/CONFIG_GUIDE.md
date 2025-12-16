@@ -99,47 +99,16 @@ debug_mode:
 
 ## 🎮 **Rich Presence (Activity Status)**
 
-### **rich_presence section** *(OPTIONAL)*
+> **📋 NOTE:** Rich Presence configuration has been moved to a separate file!
+>
+> **🎯 New Location:** `rpc.yml` file in the project root
+>
+> **📖 Complete Guide:** See [RPC.md](RPC.md) for detailed setup instructions
+>
+> **🚀 Quick Setup:** Use commands like `+rpc enable`, `+rpc setType`, `+rpc setLargeImage`
 
-```yaml
-rich_presence:
-  enabled: true                    # Enable custom activity status
-  default:
-    application_id: "1306468377539379241"  # Discord app ID
-    name: "Vexil Selfbot"          # Activity name
-    details: "Summoning Silence"   # Activity details
-    state: "github.com/faiz4sure"  # Activity state
-    type: "PLAYING"                # Activity type
-    assets:
-      large_image: "vexil"         # Large image key
-      large_text: "Vexil"          # Large image hover text
-      small_image: "thunder"       # Small image key
-      small_text: "github.com/faiz4sure"  # Small image hover text
-```
-
-#### **Configuration Details:**
-
-- **`enabled`** *(OPTIONAL)*
-  - **What it is**: Show custom activity on your Discord profile
-  - **Options**: `true` or `false`
-  - **Default**: `true`
-
-- **`name`** *(OPTIONAL)*
-  - **What it is**: Main activity text (shows as "Playing ...")
-  - **Example**: `"Vexil Selfbot"`
-
-- **`details`** *(OPTIONAL)*
-  - **What it is**: Smaller text under the name
-  - **Example**: `"Summoning Silence"`
-
-- **`state`** *(OPTIONAL)*
-  - **What it is**: Bottom text in activity
-  - **Example**: `"github.com/faiz4sure"`
-
-- **`type`** *(OPTIONAL)*
-  - **What it is**: Activity type
-  - **Options**: `"PLAYING"`, `"WATCHING"`, `"LISTENING"`, `"STREAMING"`, `"COMPETING"`
-  - **Default**: `"PLAYING"`
+**The old `rich_presence` section in config.yaml is no longer used.**
+**All RPC settings are now managed through the `rpc.yml` file and in-game commands.**
 
 ---
 
@@ -328,14 +297,8 @@ relationship_logs:
 debug_mode:
   enabled: false
 
-rich_presence:
-  enabled: true
-  default:
-    application_id: "1306468377539379241"
-    name: "My Custom Selfbot"
-    details: "Having fun"
-    state: "github.com/faiz4sure"
-    type: "PLAYING"
+# Rich Presence is now configured in rpc.yml file
+# See docs/RPC.md for complete setup guide
 
 ai:
   groq_api_key: "your_groq_key_here"
@@ -362,6 +325,7 @@ bad_phrases:
 
 - **Discord Server**: [Join our support server](https://discord.gg/b3hZG4R7Mf)
 - **Token Guide**: [GET_TOKEN.md](GET_TOKEN.md)
+- **RPC Guide**: [RPC.md](RPC.md) - Complete Rich Presence setup guide
 - **Contact**: `faiz4sure` on Discord
 
 ---

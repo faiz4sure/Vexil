@@ -1,0 +1,75 @@
+# ====================================================================
+# 🎨 VEXIL RICH PRESENCE CONFIGURATION
+# ====================================================================
+# This file controls your Discord Rich Presence (custom status)
+#
+# 🚀 WHAT YOU CAN DO:
+# • Show custom games with images and buttons
+# • Display what you're listening to/watching
+# • Add clickable buttons to your profile
+# • Show timestamps and party info
+# • Use Discord app assets OR external URLs
+# • Real-time updates without file writes!
+#
+# 📖 FULL GUIDE: docs/RPC.md
+# ====================================================================
+
+# Rich Presence Master Settings
+rpc:
+  # Enable/disable Rich Presence globally
+  enabled: true
+
+  # Application ID for Rich Presence (required for assets)
+  # 📝 Get yours from: https://discord.com/developers/applications
+  application_id: "1306468377539379241"
+
+  # Default Rich Presence settings
+  default:
+    # Activity type: PLAYING, STREAMING, LISTENING, WATCHING, COMPETING
+    type: "PLAYING"
+
+    # Main activity name (what shows as "Playing ...")
+    # 📝 Examples: "My Custom Game", "Spotify", "YouTube"
+    name: "Vexil Selfbot"
+
+    # Activity details (smaller text)
+    # 📝 Examples: "Level 50 Warrior", "Chill Vibes Playlist"
+    details: "Summoning Silence"
+
+    # Activity state (bottom text)
+    # 📝 Examples: "github.com/username", "Live Now!", "3/25 songs"
+    state: "github.com/faiz4sure"
+
+    # Streaming URL (only for STREAMING type)
+    # 📝 Example: "https://twitch.tv/yourchannel"
+    url: ""
+
+    # Party information (shows as "X of Y players")
+    party:
+      current: 1
+      max: 1
+      id: ""
+
+    # Timestamps (shows elapsed time)
+    # 📝 Use: "now", "+1h", "1640995200000", or null
+    timestamps:
+      start: null
+      end: null
+
+    # Image assets - THREE WAYS TO SET:
+    # 1. Discord app asset names: "mylogo", "mythunder"
+    # 2. Direct asset IDs: "929325841350000660"
+    # 3. External URLs: "https://i.imgur.com/abc.png"
+    assets:
+      large_image: "vexil"           # Large image (512x512px recommended)
+      large_text: "Vexil Selfbot"    # Hover text for large image
+      small_image: "thunder"         # Small image (128x128px recommended)
+      small_text: "github.com/faiz4sure"  # Hover text for small image
+
+    # Clickable buttons (max 2 buttons)
+    # 📝 Each button needs: label + URL
+    buttons:
+    - label: "GitHub"
+      url: "https://github.com/faiz4sure/Vexil"
+    - label: "Support"
+      url: "https://discord.gg/b3hZG4R7Mf"

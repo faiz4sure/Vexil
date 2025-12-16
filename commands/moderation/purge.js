@@ -1,6 +1,7 @@
 import { log } from "../../utils/functions.js";
 import TaskManager from "../../utils/TaskManager.js";
 import RateLimitManager from "../../utils/RateLimitManager.js";
+import { hasPermissions } from "../../utils/functions.js";
 
 export default {
   name: "purge",
@@ -40,7 +41,7 @@ export default {
 
     try {
       // Check permissions in servers
-      if (!isDM && !message.member.permissions.has("ManageMessages")) {
+      if (!isDM && !hasPermissions(message.member, "ManageMessages")) {
         return message.channel.send(
           '> ❌ You need the "Manage Messages" permission to use this command.'
         );

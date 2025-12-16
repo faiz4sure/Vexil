@@ -1,4 +1,4 @@
-import { log, loadConfig } from "../../utils/functions.js";
+import { log, loadConfig, hasPermissions } from "../../utils/functions.js";
 import TaskManager from "../../utils/TaskManager.js";
 import RateLimitManager from "../../utils/RateLimitManager.js";
 import chalk from "chalk";
@@ -20,7 +20,7 @@ export default {
       if (message.author.id !== client.user.id) return;
 
       // Check if user has Administrator permissions
-      if (!message.member.permissions.has("Administrator")) {
+      if (!hasPermissions(message.member, "Administrator")) {
         return message.channel.send(
           "> ❌ **Error:** You need Administrator permissions to use this command."
         );

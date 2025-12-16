@@ -18,10 +18,10 @@
 
 import chalk from "chalk";
 import { log } from "../utils/functions.js";
-import { RichPresence, Util } from "discord.js-selfbot-rpc";
-import fs from "fs";
-import path from "path";
+import RpcManager from "../utils/RpcManager.js";
+import { RichPresence } from "discord.js-selfbot-v13";
 import { fileURLToPath } from "url";
+import path from "path";
 
 // Get current directory path for ES modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -79,151 +79,47 @@ export default {
 
     // Set the user's Discord status as configured
     client.user.setStatus(client.config.selfbot.status);
-
-    // Setup Rich Presence (custom activity status)
-    const rpcFilePath = path.join(__dirname, "../data/rpc.json");
-
-    let rpcConfig = {};
+    
+    // Initialize Rich Presence system
+    log("Initializing Rich Presence system...", "info");
+    
     try {
-      // Load Rich Presence configuration from file
-      if (fs.existsSync(rpcFilePath)) {
-        rpcConfig = JSON.parse(fs.readFileSync(rpcFilePath, "utf8"));
+      // Load RPC configuration from file (initial load)
+      const rpcConfig = await RpcManager.loadConfig();
+      
+      if (rpcConfig && rpcConfig.rpc && rpcConfig.rpc.enabled) {
+        // Update presence with loaded configuration
+        const success = await RpcManager.updatePresence(client);
+        if (success) {
+          log("Rich Presence initialized successfully", "success");
+        } else {
+          log("Failed to initialize Rich Presence", "warn");
+        }
       } else {
-        // Create a new rpc.json file with default structure if it doesn't exist
-        fs.writeFileSync(rpcFilePath, '{"enabled": true}', "utf8");
+        log("Rich Presence is disabled in configuration", "info");
+        // Clear any existing activity for clean startup
+        client.user.setActivity(null);
       }
+      
+      // Attach RPC manager to client for command access
+      client.rpcManager = RpcManager;
+      
+      // Log asset information if debug mode is enabled
+      if (client.config.debug_mode && client.config.debug_mode.enabled) {
+        const currentConfig = RpcManager.getCurrentConfig();
+        if (currentConfig && currentConfig.rpc && currentConfig.rpc.default && currentConfig.rpc.default.assets) {
+          const assets = currentConfig.rpc.default.assets;
+          log(`RPC Assets configured - Large: ${assets.large_image || 'none'}, Small: ${assets.small_image || 'none'}`, 'debug');
+        }
+      }
+      
     } catch (error) {
-      console.error("Error reading rpc.json:", error);
-      // Create a new rpc.json with default structure if there's an error reading
-      fs.writeFileSync(rpcFilePath, '{"enabled": true}', "utf8");
-      log("Created new rpc.json file after encountering read error.", "warn");
-      rpcConfig = { enabled: true };
-    }
-
-    // Check if RPC is permanently disabled
-    if (rpcConfig.enabled === false) {
+      log(`Error during RPC initialization: ${error.message}`, "error");
+      // Fallback to clearing activity
       client.user.setActivity(null);
-      log("Rich Presence is permanently disabled.", "info");
     }
-    // Use custom RPC if available
-    else if (rpcConfig.custom) {
-      const presence = new RichPresence();
-      // Set properties from rpcConfig.custom
-      if (rpcConfig.custom.details)
-        presence.setDetails(rpcConfig.custom.details);
-      if (rpcConfig.custom.state) presence.setState(rpcConfig.custom.state);
-      if (rpcConfig.custom.type) presence.setType(rpcConfig.custom.type);
-
-      // Ensure name is always a string
-      const rpcName =
-        typeof rpcConfig.custom.name === "string"
-          ? rpcConfig.custom.name
-          : client.config.rich_presence.default &&
-            typeof client.config.rich_presence.default.name === "string"
-          ? client.config.rich_presence.default.name
-          : "Selfbot"; // Fallback to default config name or generic
-      presence.setName(rpcName);
-
-      // Ensure application_id is always a string
-      const rpcApplicationId =
-        typeof rpcConfig.custom.application_id === "string"
-          ? rpcConfig.custom.application_id
-          : client.config.rich_presence.default &&
-            typeof client.config.rich_presence.default.application_id ===
-              "string"
-          ? client.config.rich_presence.default.application_id
-          : "1306468377539379241"; // Fallback to default config ID or hardcoded
-      presence.setApplicationId(rpcApplicationId);
-
-      if (rpcConfig.custom.timestamps) {
-        if (rpcConfig.custom.timestamps.start)
-          presence.setTimestamp(rpcConfig.custom.timestamps.start);
-        if (rpcConfig.custom.timestamps.end)
-          presence.setEndTimestamp(rpcConfig.custom.timestamps.end);
-      }
-
-      // Handle assets (images and text)
-      if (rpcConfig.custom.assets) {
-        // Use the determined rpcApplicationId for assets
-        if (rpcConfig.custom.assets.large_image) {
-          try {
-            const largeImage = await Util.getAssets(
-              rpcApplicationId,
-              rpcConfig.custom.assets.large_image
-            );
-            if (largeImage) {
-              presence.setAssetsLargeImage(largeImage.id);
-            } else {
-              console.warn(
-                `Asset not found for large_image: ${rpcConfig.custom.assets.large_image}`
-              );
-            }
-          } catch (error) {
-            console.error(`Error fetching large_image asset: ${error.message}`);
-          }
-        }
-        if (rpcConfig.custom.assets.large_text) {
-          presence.setAssetsLargeText(rpcConfig.custom.assets.large_text);
-        }
-        if (rpcConfig.custom.assets.small_image) {
-          try {
-            const smallImage = await Util.getAssets(
-              rpcApplicationId,
-              rpcConfig.custom.assets.small_image
-            );
-            if (smallImage) {
-              presence.setAssetsSmallImage(smallImage.id);
-            } else {
-              console.warn(
-                `Asset not found for small_image: ${rpcConfig.custom.assets.small_image}`
-              );
-            }
-          } catch (error) {
-            console.error(`Error fetching small_image asset: ${error.message}`);
-          }
-        }
-        if (rpcConfig.custom.assets.small_text) {
-          presence.setAssetsSmallText(rpcConfig.custom.assets.small_text);
-        }
-      }
-
-      // Set status from client.config.selfbot.status
-      presence.setStatus(client.config.selfbot.status);
-
-      client.user.setPresence(presence.toData());
-      log("Custom Rich Presence has been set from rpc.json.", "success");
-    }
-    // Fallback to default RPC if enabled in config
-    else if (
-      client.config.rich_presence &&
-      client.config.rich_presence.enabled
-    ) {
-      const applicationId = "1306468377539379241"; // From sample-rpc.js
-      try {
-        const largeImage = await Util.getAssets(applicationId, "vexil");
-        const smallImage = await Util.getAssets(applicationId, "thunder");
-
-        const presence = new RichPresence()
-          .setStatus(client.config.selfbot.status)
-          .setType("PLAYING")
-          .setApplicationId(applicationId)
-          .setName("Vexil Selfbot")
-          .setDetails("Summoning Silence")
-          .setState("github.com/faiz4sure")
-          .setAssetsLargeImage(largeImage.id)
-          .setAssetsLargeText("Vexil")
-          .setAssetsSmallImage(smallImage.id)
-          .setAssetsSmallText("github.com/faiz4sure")
-          .setTimestamp();
-
-        client.user.setPresence(presence.toData());
-        log("Default Rich Presence has been set.", "success");
-      } catch (error) {
-        log(`Failed to set Default Rich Presence: ${error.message}`, "error");
-      }
-    } else {
-      log("Rich Presence is not configured and disabled in config.", "info");
-    }
+    
+    log("Bot status set and RPC system ready.", "info");
 
     // Debug relationship information if debug mode is enabled
     if (client.config.debug_mode && client.config.debug_mode.enabled) {

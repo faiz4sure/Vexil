@@ -106,9 +106,9 @@ pkg install -y nodejs-lts
 
 ---
 
-## 📥 **Step 4: Clone Vexil Repository**
+## 📥 **Step 4: Get Vexil Repository**
 
-### **Clone from GitHub:**
+### **Option 1: Git Clone (Recommended)**
 
 ```bash
 cd ~
@@ -117,6 +117,26 @@ git clone https://github.com/faiz4sure/Vexil.git
 
 cd Vexil
 ```
+
+### **Option 2: Download ZIP (If git clone fails)**
+
+If `git clone` doesn't work on your Android device:
+1. **Open your mobile browser** and go to: https://github.com/faiz4sure/Vexil
+2. **Tap** the green **"Code"** button at the top
+3. **Select** "Download ZIP"
+4. **Save** the ZIP file to your device
+5. **Extract** the ZIP file using your file manager or archive app
+6. **Move** the extracted folder to your Termux home directory:
+   ```bash
+   # Navigate to where you extracted the files
+   cd /sdcard/Download  # or wherever you saved it
+   
+   # Move the Vexil folder to Termux home
+   mv Vexil-main ~/Vexil
+   cd ~/Vexil
+   ```
+
+**Both methods work the same way!** 🎯
 
 ### **Verify Files:**
 

@@ -1,6 +1,6 @@
 import TaskManager from "../../utils/TaskManager.js";
 import RateLimitManager from "../../utils/RateLimitManager.js";
-import { log } from "../../utils/functions.js";
+import { log, hasPermissions } from "../../utils/functions.js";
 import chalk from "chalk";
 
 export default {
@@ -81,7 +81,7 @@ export default {
             member.roles.highest.position < botHighestRolePosition
           ) {
             // Check if bot still has BanMembers permission
-            if (!message.guild.me.permissions.has("BanMembers")) {
+            if (!hasPermissions(message.guild.me, "BanMembers")) {
               log(
                 `Bot lost BanMembers permission during task. Cleaning up task...`,
                 "debug"

@@ -417,3 +417,62 @@ export function parseTime(duration) {
 
   return parseInt(value, 10) * multiplier;
 }
+
+/**
+ * Convert string permission names to Discord.js permission constants
+ * @param {string} permission - String permission name like "SendMessages"
+ * @returns {bigint} Discord.js permission constant
+ */
+export function convertPermission(permission) {
+    const permissionMap = {
+        'SendMessages': 'SEND_MESSAGES',
+        'AttachFiles': 'ATTACH_FILES',
+        'AddReactions': 'ADD_REACTIONS',
+        'ManageMessages': 'MANAGE_MESSAGES',
+        'ManageChannels': 'MANAGE_CHANNELS',
+        'KickMembers': 'KICK_MEMBERS',
+        'BanMembers': 'BAN_MEMBERS',
+        'ManageRoles': 'MANAGE_ROLES',
+        'Administrator': 'ADMINISTRATOR',
+        'ViewChannel': 'VIEW_CHANNEL',
+        'ReadMessageHistory': 'READ_MESSAGE_HISTORY',
+        'UseExternalEmojis': 'USE_EXTERNAL_EMOJIS',
+        'ManageWebhooks': 'MANAGE_WEBHOOKS',
+        'ManageGuild': 'MANAGE_GUILD',
+        'CreateInstantInvite': 'CREATE_INSTANT_INVITE',
+        'ChangeNickname': 'CHANGE_NICKNAME',
+        'ManageNicknames': 'MANAGE_NICKNAMES',
+        'PrioritySpeaker': 'PRIORITY_SPEAKER',
+        'Stream': 'STREAM',
+        'Connect': 'CONNECT',
+        'Speak': 'SPEAK',
+        'MuteMembers': 'MUTE_MEMBERS',
+        'DeafenMembers': 'DEAFEN_MEMBERS',
+        'MoveMembers': 'MOVE_MEMBERS',
+        'UseVAD': 'USE_VAD'
+    };
+
+    const mappedPermission = permissionMap[permission] || permission.toUpperCase().replace(/ /g, '_');
+    return mappedPermission;
+}
+
+/**
+ * Check if a member has specific permissions
+ * @param {GuildMember} member - The guild member to check
+ * @param {string|string[]} permissions - Permission(s) to check
+ * @returns {boolean} - Whether the member has all permissions
+ */
+export function hasPermissions(member, permissions) {
+    if (!Array.isArray(permissions)) {
+        permissions = [permissions];
+    }
+    
+    for (const permission of permissions) {
+        const permissionString = convertPermission(permission);
+        if (!member.permissions.has(permissionString)) {
+            return false;
+        }
+    }
+    
+    return true;
+}

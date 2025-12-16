@@ -6,14 +6,13 @@
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=4000&pause=1000&color=00FFFF&center=true&vCenter=true&width=600&lines=Summoning+Silence...;A+Powerful+Discord+Selfbot;Multifunctional+%26+Feature-Rich;Built+with+ES6+" alt="Typing SVG" />
 
-[![Discord](https://img.shields.io/discord/1234567890123456789?color=7289da&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/b3hZG4R7Mf)
+[![Discord Server](https://img.shields.io/badge/Discord-Join%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/b3hZG4R7Mf)
 [![GitHub stars](https://img.shields.io/github/stars/faiz4sure/Vexil?color=yellow&style=for-the-badge)](https://github.com/faiz4sure/Vexil/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/faiz4sure/Vexil?color=green&style=for-the-badge)](https://github.com/faiz4sure/Vexil/network)
 [![GitHub issues](https://img.shields.io/github/issues/faiz4sure/Vexil?color=red&style=for-the-badge)](https://github.com/faiz4sure/Vexil/issues)
 [![License](https://img.shields.io/github/license/faiz4sure/Vexil?color=blue&style=for-the-badge)](LICENSE)
 
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Electron](https://img.shields.io/badge/Electron-2B2E3A?style=for-the-badge&logo=electron&logoColor=9FEAF9)](https://www.electronjs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 </div>
@@ -54,24 +53,6 @@
 
 ## 🚀 **Quick Start**
 
-### 🎯 **Option 1: GUI Release (Recommended for Windows)**
-
-**✨ Easy Installation - No Technical Knowledge Required!**
-
-1. **Go to** this release page [Releases](https://github.com/faiz4sure/Vexil/releases)
-2. **Download** the `.exe` file 
-3. **Run** the `.exe` file - it will guide you through setup interactively
-4. **Enjoy** - No manual configuration needed!
-
-**📋 System Requirements:**
-- **Windows** 10/11
-- **RAM:** Minimum 8GB (2GB+ free memory recommended)
-- **Storage:** >5GB free space
-- **Note:** Restart system after heavy usage for optimal performance
-
----
-
-### 🛠️ **Option 2: Manual Setup (Advanced Users)**
 
 ### 📋 **Prerequisites**
 
@@ -81,6 +62,7 @@
 
 ### 📥 **Installation**
 
+#### **Option 1: Git Clone (Recommended)**
 ```bash
 # Clone the repository
 git clone https://github.com/faiz4sure/Vexil.git
@@ -90,8 +72,18 @@ cd Vexil
 
 # Install dependencies
 npm install
-
 ```
+
+#### **Option 2: Download ZIP (If git clone fails)**
+If `git clone` doesn't work for you:
+1. **Go to** the GitHub repository: https://github.com/faiz4sure/Vexil
+2. **Click** the green **"Code"** button at the top
+3. **Select** "Download ZIP"
+4. **Extract** the ZIP file to your desired location
+5. **Open** the extracted folder in your terminal/command prompt
+6. **Run** `npm install` to install dependencies
+
+**Both methods work the same way!** 🎯
 
 ### ⚙️ **Configuration**
 
@@ -231,19 +223,29 @@ node index.js
 
 ```
 Vexil/
-├── 📁 commands/          # Command modules
+├── 📁 commands/          # Command modules (organized by category)
 │   ├── 🤖 AI/           # AI-powered commands
-│   ├── 🎉 fun/          # Fun and entertainment
-│   ├── 🔧 general/      # General utilities
-│   ├── 🛡️ moderation/   # Moderation tools
-│   ├── 🎮 server/       # Server management
-│   └── 🎭 troll/        # Troll commands
-├── 📁 events/           # Event handlers
-├── 📁 handlers/         # Core handlers
-├── 📁 utils/            # Utility functions
-├── 📁 docs/             # Documentation
-├── ⚙️ config.yaml      # Configuration file
-└── 🚀 index.js         # Main entry point
+│   ├── 🎉 fun/          # Fun and entertainment commands
+│   ├── 🔧 general/      # General utilities and info commands
+│   ├── 🛡️ moderation/   # Server moderation tools
+│   ├── 🎮 server/       # Server management commands
+│   ├── 🎭 troll/        # Troll and prank commands
+│   ├── 💥 misc/         # Miscellaneous utilities
+│   ├── 📱 media/        # Media and image commands
+│   ├── 🔞 nsfw/         # 18+ content commands
+│   └── 📊 settings/     # Bot configuration commands
+│   └── 🎮 status/       # Status and Rich Presence commands
+├── 📁 events/           # Discord event handlers
+│   └── 📁 relationship/ # Relationship/friend event handlers
+├── 📁 handlers/         # Core system handlers
+├── 📁 utils/            # Utility functions and managers
+├── 📁 docs/             # Documentation files
+├── ⚙️ config.yaml       # Main configuration file
+├── 🎨 rpc.yml          # Rich Presence configuration
+├── 📄 package.json      # Project dependencies
+├── 🚀 index.js         # Main entry point
+├── 🔰 start.bat        # Windows startup script
+└── 📜 LICENSE          # MIT License
 ```
 
 ---
@@ -253,16 +255,29 @@ Vexil/
 <details>
 <summary><b>🎨 Rich Presence Setup</b></summary>
 
+**Full RPC Guide:** [docs/RPC.md](docs/RPC.md)
+
 ```yaml
-rich_presence:
+# Rich Presence configuration in rpc.yml
+rpc:
   enabled: true
+  application_id: "1306468377539379241"
   default:
-    application_id: "1306468377539379241"
+    type: "PLAYING"
     name: "Vexil Selfbot"
     details: "Summoning Silence"
     state: "github.com/faiz4sure"
-    type: "PLAYING"
+    assets:
+      large_image: "vexil"
+      large_text: "Vexil Selfbot"
+      small_image: "thunder"
+      small_text: "github.com/faiz4sure"
+    buttons:
+      - label: "GitHub"
+        url: "https://github.com/faiz4sure/Vexil"
 ```
+
+**Commands:** `+rpc enable`, `+rpc setType`, `+rpc setLargeImage`, etc.
 
 </details>
 
@@ -271,22 +286,71 @@ rich_presence:
 
 ```yaml
 ai:
-  groq_api_key: "your_groq_api_key_here"  # Free at console.groq.com
+  groq_api_key: "your_groq_api_key_here"  # Get free at console.groq.com
 ```
+
+**Command:** `+ask` - Ask AI questions using Groq API
 
 </details>
 
 <details>
-<summary><b>🔊 Voice Settings</b></summary>
+<summary><b>🔊 Voice Channel Settings</b></summary>
 
 ```yaml
 vc_command:
-  mute: true
-  deafen: true
+  mute: true        # Auto-mute when joining voice
+  deafen: true      # Auto-deafen when joining voice
   auto_reconnect: true
   reconnect_delay: 5
   max_attempts: 3
 ```
+
+**Commands:** `+joinVC`, `+leaveVC`, voice moderation commands
+
+</details>
+
+<details>
+<summary><b>💥 Server Protection Settings</b></summary>
+
+```yaml
+# Anti-nuke protection settings
+nuke:
+  nuke_message: "@everyone Vexil was here!"
+  server_name: "Vexil owns this server!"
+  channels:
+    - "Nuked by self"
+    - "crushed"
+```
+
+**⚠️ WARNING:** These are for the dangerous `+nuke` command - use responsibly!
+
+</details>
+
+<details>
+<summary><b>🔞 NSFW Content</b></summary>
+
+```yaml
+nsfw:
+  enabled: false  # Enable 18+ content commands
+```
+
+**Commands:** Various NSFW commands (18+ only)
+
+</details>
+
+<details>
+<summary><b>🎭 Troll Commands</b></summary>
+
+```yaml
+bad_phrases:
+  enabled: true
+  phrases:
+    - "Your custom phrase here"
+    - "Another troll phrase"
+```
+
+**Commands:** `+badreply`, `+spam`, `+stalk`, etc.
+**⚠️ Use responsibly!**
 
 </details>
 
@@ -336,6 +400,7 @@ npm run lint
 | [⚙️ Configuration Guide](docs/CONFIG_GUIDE.md) | Complete config.yaml setup tutorial |
 | [📱 Android Setup](docs/ANDROID.md) | Mobile device setup instructions |
 | [🎨 Image Generation](docs/imagegen-guide.md) | AI image generation guide |
+| [🎮 Rich Presence Guide](docs/RPC.md) | Complete RPC setup and customization guide |
 
 ---
 
@@ -386,7 +451,7 @@ npm run lint
 | 📈 **Metric** | 📊 **Value** |
 |:---:|:---:|
 | **⏱️ Total Development Time** | **2.5 Months** |
-| **📝 Lines of Code** | **19,065** |
+| **📝 Lines of Code** | **20,234** |
 | **🎯 Commands Implemented** | **120+** |
 | **📁 Files Created** | **100+** |
 
