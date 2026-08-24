@@ -423,7 +423,7 @@ export default {
         try {
             await client.rpcManager.forceReload();
             const freshConfig = await client.rpcManager.loadConfig();
-            const applicationId = freshConfig.rpc.application_id || '1306468377539379241';
+            const applicationId = freshConfig.rpc.application_id || '1522275745450168462';
             await client.rpcManager.ensureAssetsFetched(client, applicationId);
             client.rpcManager.updateConfig(freshConfig);
             const success = await client.rpcManager.updatePresence(client);
@@ -447,7 +447,7 @@ export default {
 
         try {
             const config = client.rpcManager.getCurrentConfig() || this.getDefaultConfig();
-            const applicationId = config.rpc.application_id || '1306468377539379241';
+            const applicationId = config.rpc.application_id || '1522275745450168462';
             
             await client.rpcManager.ensureAssetsFetched(client, applicationId);
             
@@ -500,7 +500,7 @@ export default {
 
         try {
             const config = client.rpcManager.getCurrentConfig() || this.getDefaultConfig();
-            const applicationId = config.rpc.application_id || '1306468377539379241';
+            const applicationId = config.rpc.application_id || '1522275745450168462';
             
             await client.rpcManager.ensureAssetsFetched(client, applicationId);
             
@@ -618,7 +618,7 @@ export default {
         return {
             rpc: {
                 enabled: true,
-                application_id: "1306468377539379241",
+                application_id: "1522275745450168462",
                 default: {
                     type: "PLAYING",
                     name: "Vexil Selfbot",

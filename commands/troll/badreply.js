@@ -1,5 +1,6 @@
 import { log, loadConfig } from "../../utils/functions.js";
 import TaskManager from "../../utils/TaskManager.js";
+import RateLimitManager from "../../utils/RateLimitManager.js";
 
 // Store active bad reply sessions
 const badReplySessions = new Map();
@@ -36,17 +37,20 @@ function getBadReplies() {
   try {
     const config = loadConfig();
 
-    // Check if bad_phrases is configured and enabled
+    const configPhrases = config.bad_phrases && Array.isArray(config.bad_phrases.phrases)
+      ? config.bad_phrases.phrases.filter(p => typeof p === "string" && p.trim().length > 0)
+      : [];
+
+    // Check if bad_phrases is configured, enabled, and has valid phrases
     if (
       config.bad_phrases &&
       config.bad_phrases.enabled &&
-      config.bad_phrases.phrases &&
-      config.bad_phrases.phrases.length > 0
+      configPhrases.length > 0
     ) {
       log("Using bad phrases from config", "debug");
-      return config.bad_phrases.phrases;
+      return configPhrases;
     } else {
-      log("Using default bad phrases (config not found or disabled)", "debug");
+      log("Using default bad phrases (config not found, disabled, or no custom phrases configured)", "debug");
       return defaultBadReplies;
     }
   } catch (error) {
@@ -59,7 +63,7 @@ export default {
   name: "badreply",
   description: "Auto-reply with bad words to a specific user",
   aliases: ["br", "toxicreply", "badword"],
-  usage: "<@user/user_id> | badreply stop <@user/user_id> | badreply list",
+  usage: "<@user/user_id> | badreply stop <@user/user_id> | badreply spam <@user/user_id> | badreply spam stop <@user/user_id> | badreply list",
   category: "troll",
   type: "both",
   permissions: ["SendMessages"],
@@ -70,8 +74,10 @@ export default {
       return message.channel.send(
         "❌ **Please specify a command!**\n" +
           `**Usage:**\n` +
-          `• \`${client.prefix}badreply @user\` - Start bad replying\n` +
+          `• \`${client.prefix}badreply @user\` - Start bad replying on user message\n` +
           `• \`${client.prefix}badreply stop @user\` - Stop bad replying\n` +
+          `• \`${client.prefix}badreply spam @user\` - Start bad reply spamming\n` +
+          `• \`${client.prefix}badreply spam stop @user\` - Stop bad reply spamming\n` +
           `• \`${client.prefix}badreply list\` - Show active sessions`
       );
     }
@@ -85,6 +91,14 @@ export default {
 
     if (subcommand === "list" || subcommand === "active") {
       return this.listActive(client, message);
+    }
+
+    if (subcommand === "spam") {
+      const secondArg = args[1]?.toLowerCase();
+      if (secondArg === "stop" || secondArg === "end") {
+        return this.stopBadReply(client, message, args.slice(2));
+      }
+      return this.startBadReplySpam(client, message, args.slice(1));
     }
 
     // Default: start bad replying to a user
@@ -132,8 +146,10 @@ export default {
 
     // Check if user is already being bad replied to
     if (badReplySessions.has(sessionKey)) {
+      const existingSession = badReplySessions.get(sessionKey);
+      const sessionType = existingSession.type === "spam" ? "spam" : "normal bad reply";
       return message.channel.send(
-        `💀 **${targetUser.username} is already being bad replied to!**`
+        `💀 **${targetUser.username} is already targeted by a ${sessionType} session!**`
       );
     }
 
@@ -147,6 +163,7 @@ export default {
 
     // Store session data
     const sessionData = {
+      type: "normal",
       targetUserId: targetUser.id,
       targetUsername: targetUser.username,
       guildId: guildId,
@@ -186,6 +203,165 @@ export default {
     );
   },
 
+  async startBadReplySpam(client, message, args) {
+    let targetUser = null;
+
+    // Parse user from mention or ID
+    if (message.mentions.users.size > 0) {
+      targetUser = message.mentions.users.first();
+    } else if (args[0]) {
+      try {
+        const userId = args[0].replace(/[<@!>]/g, "");
+        if (/^\d+$/.test(userId)) {
+          targetUser = await client.users.fetch(userId);
+        }
+      } catch (error) {
+        return message.channel.send(
+          "❌ **User not found!** Please mention a valid user or provide a valid user ID."
+        );
+      }
+    }
+
+    if (!targetUser) {
+      return message.channel.send(
+        "❌ **Please specify a user to bad reply spam!**\n" +
+          `**Usage:** \`${client.prefix}badreply spam @user\``
+      );
+    }
+
+    // Prevent self-targeting
+    if (targetUser.id === message.author.id) {
+      return message.channel.send("🤡 **You can't bad reply spam yourself!**");
+    }
+
+    // Prevent targeting bots
+    if (targetUser.bot) {
+      return message.channel.send("🤖 **Can't bad reply spam bots!**");
+    }
+
+    const guildId = message.guild?.id || "dm";
+    const sessionKey = `${targetUser.id}:${guildId}`;
+
+    // Check if user is already being bad replied to (any session type)
+    if (badReplySessions.has(sessionKey)) {
+      const existingSession = badReplySessions.get(sessionKey);
+      const sessionType = existingSession.type === "spam" ? "spam" : "normal bad reply";
+      return message.channel.send(
+        `💀 **${targetUser.username} is already targeted by a ${sessionType} session!**`
+      );
+    }
+
+    // Create task using TaskManager
+    const taskName = `badreply_spam_${targetUser.id}`;
+    const task = TaskManager.createTask(taskName, guildId);
+
+    if (!task) {
+      return message.channel.send("❌ **Failed to create bad reply spam task!**");
+    }
+
+    // Store session data
+    const sessionData = {
+      type: "spam",
+      targetUserId: targetUser.id,
+      targetUsername: targetUser.username,
+      guildId: guildId,
+      channelId: message.channel.id,
+      startedBy: message.author.id,
+      startedAt: Date.now(),
+      replyCount: 0,
+      task: task,
+      isCancelled: false,
+    };
+
+    // Add cancellation listener to clean up session immediately
+    if (task.signal) {
+      task.signal.addEventListener("abort", () => {
+        sessionData.isCancelled = true;
+        badReplySessions.delete(sessionKey);
+        if (!task.signal.reason || task.signal.reason !== "completed") {
+          log(
+            `Bad reply spam task for ${targetUser.username} was cancelled`,
+            "warn"
+          );
+        }
+      });
+    }
+
+    badReplySessions.set(sessionKey, sessionData);
+
+    await message.channel.send(
+      `💀 **Started bad reply spamming to ${targetUser.username}!**\n` +
+        `Mentions and bad phrases will be spammed in this channel.`
+    );
+
+    log(
+      `Started bad reply spamming to ${targetUser.username} (${targetUser.id}) in ${guildId}`,
+      "debug"
+    );
+
+    // Start the asynchronous spam loop
+    (async () => {
+      const rateLimiter = new RateLimitManager(1);
+
+      while (!sessionData.isCancelled && !task.signal.aborted) {
+        try {
+          const badReplies = getBadReplies();
+          const randomReply = badReplies[Math.floor(Math.random() * badReplies.length)];
+          const spamMsg = `${randomReply} <@${targetUser.id}>`;
+
+          await rateLimiter.execute(async () => {
+            if (sessionData.isCancelled || task.signal.aborted) return;
+            const channel = await client.channels.fetch(sessionData.channelId).catch(() => null);
+            if (!channel) throw new Error("Channel not found or inaccessible");
+            await channel.send(spamMsg);
+            sessionData.replyCount++;
+          }, task.signal);
+
+          // Wait 2000ms or until aborted
+          await new Promise((resolve) => {
+            const timeout = setTimeout(resolve, 2000);
+            const onAbort = () => {
+              clearTimeout(timeout);
+              resolve();
+            };
+            task.signal.addEventListener("abort", onAbort);
+          });
+        } catch (error) {
+          if (task.signal.aborted || sessionData.isCancelled || error.message.includes("cancelled")) {
+            break;
+          }
+          log(`Error in bad reply spam loop: ${error.message}`, "warn");
+
+          // Stop if permission error
+          if (error.status === 403 || error.message.includes("Missing Permissions")) {
+            log(`Stopping bad reply spam session due to missing permissions`, "debug");
+            break;
+          }
+
+          // Wait 3 seconds on error before retrying
+          await new Promise((resolve) => {
+            const timeout = setTimeout(resolve, 3000);
+            if (task.signal) {
+              task.signal.addEventListener("abort", () => {
+                clearTimeout(timeout);
+                resolve();
+              });
+            }
+          });
+        }
+      }
+
+      // Cleanup if loop exited (e.g. error, or if aborted naturally but not yet cleaned up)
+      if (!sessionData.isCancelled) {
+        sessionData.isCancelled = true;
+        if (task) {
+          task.stop();
+        }
+        badReplySessions.delete(sessionKey);
+      }
+    })();
+  },
+
   async stopBadReply(client, message, args) {
     let targetUser = null;
 
@@ -205,7 +381,7 @@ export default {
 
     if (!targetUser) {
       return message.channel.send(
-        "❌ **Please specify which user to stop bad replying to!**"
+        "❌ **Please specify which user to stop targeting!**"
       );
     }
 
@@ -214,13 +390,14 @@ export default {
 
     if (!badReplySessions.has(sessionKey)) {
       return message.channel.send(
-        `❌ **${targetUser.username} is not being bad replied to!**`
+        `❌ **${targetUser.username} is not being bad replied/spammed to!**`
       );
     }
 
     const sessionData = badReplySessions.get(sessionKey);
     const duration = Date.now() - sessionData.startedAt;
     const durationText = this.formatDuration(duration);
+    const isSpam = sessionData.type === "spam";
 
     // Stop the task and remove session
     if (sessionData.task) {
@@ -229,13 +406,13 @@ export default {
     badReplySessions.delete(sessionKey);
 
     await message.channel.send(
-      `✅ **Stopped bad replying to ${targetUser.username}!**\n` +
+      `✅ **Stopped ${isSpam ? "bad reply spamming" : "bad replying"} to ${targetUser.username}!**\n` +
         `**Duration:** ${durationText}\n` +
-        `**Replies sent:** ${sessionData.replyCount}`
+        `**Messages sent:** ${sessionData.replyCount}`
     );
 
     log(
-      `Stopped bad replying to ${targetUser.username} (${targetUser.id})`,
+      `Stopped bad reply session for ${targetUser.username} (${targetUser.id})`,
       "debug"
     );
   },
@@ -247,18 +424,19 @@ export default {
     );
 
     if (activeSessions.length === 0) {
-      return message.channel.send("📝 **No active bad reply sessions!**");
+      return message.channel.send("📝 **No active bad reply/spam sessions!**");
     }
 
-    let listText = "💀 **Active Bad Reply Sessions:**\n\n";
+    let listText = "💀 **Active Bad Reply/Spam Sessions:**\n\n";
 
     for (const [sessionKey, data] of activeSessions) {
       const duration = Date.now() - data.startedAt;
       const durationText = this.formatDuration(duration);
+      const sessionType = data.type === "spam" ? "Spam" : "Normal";
 
-      listText += `**${data.targetUsername}**\n`;
+      listText += `**${data.targetUsername}** (${sessionType})\n`;
       listText += `• Duration: ${durationText}\n`;
-      listText += `• Replies sent: ${data.replyCount}\n\n`;
+      listText += `• Messages sent: ${data.replyCount}\n\n`;
     }
 
     await message.channel.send(listText);

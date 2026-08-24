@@ -32,6 +32,7 @@ import { setupRateLimit } from "./handlers/RateLimitHandler.js";
 // Import utility modules
 import { loadConfig, clearConsole, log, wait } from "./utils/functions.js";
 import TaskManager from "./utils/TaskManager.js";
+import AIManager from "./utils/AIManager.js";
 
 // Import additional features
 import { initNitroSniper } from "./commands/general/nitrosniper.js";
@@ -267,6 +268,10 @@ async function initializeSelfbot() {
     // Step 1: Load and validate configuration
     log("Loading configuration...", "info");
     const config = loadConfig();
+
+    // Initialize AI Manager
+    log("Initializing AI Manager...", "info");
+    AIManager.initialize();
 
     // Step 2: Validate Discord token before proceeding
     log("Validating Discord token...", "info");

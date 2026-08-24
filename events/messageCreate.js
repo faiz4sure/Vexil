@@ -21,6 +21,7 @@ import { readAfkData, writeAfkData } from "../utils/afkHandler.js";
 import { formatTime, log, loadConfig } from "../utils/functions.js";
 import { clownifySessions } from "../commands/fun/clownify.js";
 import { badReplySessions, getBadReplies } from "../commands/troll/badreply.js";
+import { handleAiAfkMessage, isAiAfkNotification } from "../commands/AI/aiafk.js";
 import StalkManager from "../utils/StalkManager.js";
 
 export default {
@@ -42,6 +43,9 @@ export default {
     // Skip processing messages from bots to prevent loops
     if (message.author.bot) return;
 
+    // ── AI AFK handler (runs before normal AFK so it can intercept own messages)
+    await handleAiAfkMessage(client, message);
+
     // Load current AFK data from storage
     const afkData = readAfkData();
 
@@ -52,7 +56,12 @@ export default {
       "> ✅ You are now AFK.",
       "> ❌ **Error:**",
       "> 😴",
+      "> 👋 **Welcome back!",
+      "> 🤖 **[AI AFK Mode]",
     ];
+
+    // Also skip if the content looks like an AI AFK notification
+    if (isAiAfkNotification(message.content)) return;
 
     // Check if message starts with ignored prefixes to prevent AFK removal loops
     if (
@@ -147,38 +156,40 @@ export default {
     // Handle bad reply sessions
     if (badReplySessions.has(sessionKey)) {
       const sessionData = badReplySessions.get(sessionKey);
-      try {
-        // Get bad replies from config or defaults
-        const badReplies = getBadReplies();
+      if (sessionData.type === "normal") {
+        try {
+          // Get bad replies from config or defaults
+          const badReplies = getBadReplies();
 
-        // Get a random bad reply
-        const randomReply =
-          badReplies[Math.floor(Math.random() * badReplies.length)];
+          // Get a random bad reply
+          const randomReply =
+            badReplies[Math.floor(Math.random() * badReplies.length)];
 
-        // Reply to the message
-        await message.reply(randomReply);
-        sessionData.replyCount++;
+          // Reply to the message
+          await message.reply(randomReply);
+          sessionData.replyCount++;
 
-        log(
-          `Bad replied to ${message.author.username} (${sessionData.replyCount} total)`,
-          "debug"
-        );
-      } catch (error) {
-        log(
-          `Failed to bad reply to ${message.author.username}: ${error.message}`,
-          "warn"
-        );
-
-        // If we can't reply (permissions lost), stop the session
-        if (error.status === 403) {
-          if (sessionData.task) {
-            sessionData.task.stop();
-          }
-          badReplySessions.delete(sessionKey);
           log(
-            `Stopped bad reply session for ${message.author.username} due to missing permissions`,
+            `Bad replied to ${message.author.username} (${sessionData.replyCount} total)`,
             "debug"
           );
+        } catch (error) {
+          log(
+            `Failed to bad reply to ${message.author.username}: ${error.message}`,
+            "warn"
+          );
+
+          // If we can't reply (permissions lost), stop the session
+          if (error.status === 403) {
+            if (sessionData.task) {
+              sessionData.task.stop();
+            }
+            badReplySessions.delete(sessionKey);
+            log(
+              `Stopped bad reply session for ${message.author.username} due to missing permissions`,
+              "debug"
+            );
+          }
         }
       }
     }

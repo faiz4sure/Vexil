@@ -16,6 +16,27 @@ export default {
       if (!client._deletedMessages) {
         client._deletedMessages = new Map();
         log("Initialized deleted messages cache", "debug");
+        
+        // Start a sweeper to clear messages older than 1 hour
+        setInterval(() => {
+          const now = Date.now();
+          const ONE_HOUR = 60 * 60 * 1000;
+          let prunedCount = 0;
+          
+          for (const [channelId, messages] of client._deletedMessages.entries()) {
+            const validMessages = messages.filter(m => now - m.timestamp < ONE_HOUR);
+            if (validMessages.length === 0) {
+              client._deletedMessages.delete(channelId);
+            } else if (validMessages.length !== messages.length) {
+              client._deletedMessages.set(channelId, validMessages);
+            }
+            prunedCount += (messages.length - validMessages.length);
+          }
+          
+          if (prunedCount > 0) {
+            log(`[Sweeper] Cleared ${prunedCount} expired deleted messages from cache`, "debug");
+          }
+        }, 10 * 60 * 1000); // Run every 10 minutes
       }
 
       // Skip if the message is invalid
@@ -43,8 +64,15 @@ export default {
         "debug"
       );
 
-      // Store the deleted message in the cache
-      client._deletedMessages.set(message.channel.id, {
+      // Initialize array for this channel if it doesn't exist
+      if (!client._deletedMessages.has(message.channel.id)) {
+        client._deletedMessages.set(message.channel.id, []);
+      }
+      
+      const channelCache = client._deletedMessages.get(message.channel.id);
+
+      // Store the deleted message in the cache at the beginning
+      channelCache.unshift({
         content: message.content || "",
         author: {
           id: message.author.id,
@@ -63,6 +91,11 @@ export default {
             }))
           : [],
       });
+      
+      // Keep only the last 10 deleted messages
+      if (channelCache.length > 10) {
+        channelCache.pop();
+      }
 
       // Handle stalk logging for message deleted
       if (StalkManager.isStalking(message.author.id)) {

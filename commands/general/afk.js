@@ -1,5 +1,6 @@
 import { readAfkData, writeAfkData } from '../../utils/afkHandler.js';
 import { log } from '../../utils/functions.js';
+import { aiAfkUsers } from '../AI/aiafk.js';
 
 export default {
     name: 'afk',
@@ -13,6 +14,11 @@ export default {
 
     execute: async (client, message, args) => {
         try {
+            // Block if AI AFK is already active
+            if (aiAfkUsers.has(message.author.id)) {
+                return message.channel.send('> ❌ **AI AFK is active.** Please send any message to return from AI AFK before setting normal AFK.');
+            }
+
             const reason = args.length > 0 ? args.join(' ') : 'No reason provided';
             const afkData = readAfkData();
 

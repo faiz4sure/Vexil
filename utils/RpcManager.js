@@ -187,7 +187,7 @@ export class RpcManager {
       }
 
       const rpcData = config.rpc.default || {};
-      const applicationId = rpcData.application_id || '1306468377539379241';
+      const applicationId = rpcData.application_id || '1522275745450168462';
       
       const assetMap = await this.ensureAssetsFetched(client, applicationId);
       
@@ -344,7 +344,7 @@ export class RpcManager {
     return {
       rpc: {
         enabled: true,
-        application_id: '1306468377539379241',
+        application_id: '1522275745450168462',
         default: {
           type: 'PLAYING',
           name: 'Vexil Selfbot',

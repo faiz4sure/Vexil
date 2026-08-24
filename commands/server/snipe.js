@@ -42,8 +42,19 @@ export default {
       );
       log(`Looking for messages in channel ID: ${targetChannel.id}`, "debug");
 
-      // Get the deleted message for this channel
-      const deletedMessage = deletedMessages.get(targetChannel.id);
+      // Get the deleted messages for this channel
+      const channelMessages = deletedMessages.get(targetChannel.id);
+      
+      // Determine which index to snipe (1-10, default 1)
+      // Since args might have a channel ID as the first arg, we need to check
+      let indexToSnipe = 0; // 0-based index
+      const possibleIndex = args[0] && !isNaN(args[0]) && message.mentions.channels.size === 0 && !client.channels.cache.has(args[0]) ? parseInt(args[0]) : (args[1] && !isNaN(args[1]) ? parseInt(args[1]) : 1);
+      
+      if (possibleIndex >= 1 && possibleIndex <= 10) {
+        indexToSnipe = possibleIndex - 1;
+      }
+
+      const deletedMessage = channelMessages ? channelMessages[indexToSnipe] : null;
 
       // If no message was found
       if (!deletedMessage) {

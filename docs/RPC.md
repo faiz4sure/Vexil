@@ -55,7 +55,7 @@ Rich Presence is Discord's feature that lets you display a **custom activity sta
 2. **Copy** the "Application ID" 
 3. **Save** it - you'll need this for Vexil!
 
-**Example Application ID:** `1306468377539379241`
+**Example Application ID:** `1522275745450168462`
 
 ---
 
@@ -199,7 +199,7 @@ Rich Presence is Discord's feature that lets you display a **custom activity sta
 ```yaml
 rpc:
   enabled: true
-  application_id: "1306468377539379241"
+  application_id: "1522275745450168462"
   default:
     type: "PLAYING"
     name: "Vexil Selfbot"

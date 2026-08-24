@@ -20,9 +20,7 @@ import chalk from "chalk"; // Terminal string styling
 import fs from "fs"; // File system operations
 import yaml from "js-yaml"; // YAML parsing and stringifying
 import path from "path"; // Path manipulation utilities
-import { fileURLToPath } from "url"; // URL to file path conversion
-
-// Get current file path and directory (ES modules compatibility)
+import { fileURLToPath } from "url"; // URL to file path conversion// Get current file path and directory (ES modules compatibility)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

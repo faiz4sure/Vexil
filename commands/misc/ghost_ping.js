@@ -32,31 +32,13 @@ export default {
         return message.reply("A ghost_ping task is already in progress.");
       }
 
+      // Delete the command message to keep it hidden
+      await message.delete().catch(() => {});
+
       try {
         const rateLimiter = new RateLimitManager(5, 5000); // Batch size: 5, Delay: 5 seconds
         let sentCount = 0;
-        let isCancelled = false;
         const totalPings = 5;
-
-        // Create status message
-        const statusMsg = await message.channel.send(
-          `> 👻 Sending ${totalPings} ghost pings to ${target.tag}...`
-        );
-
-        // Add cancellation listener
-        if (task.signal) {
-          task.signal.addEventListener("abort", () => {
-            // Only show cancellation message if it wasn't a natural completion
-            if (!task.signal.reason || task.signal.reason !== "completed") {
-              isCancelled = true;
-              statusMsg
-                .edit(
-                  `> ⚠️ Ghost ping task cancelled after sending ${sentCount} pings.`
-                )
-                .catch(() => {});
-            }
-          });
-        }
 
         for (let i = 0; i < totalPings; i++) {
           if (task.signal.aborted) break;
@@ -70,14 +52,6 @@ export default {
               });
             });
           }, task.signal);
-        }
-
-        if (!isCancelled) {
-          statusMsg
-            .edit(
-              `> ✅ Sent ${sentCount} ghost pings to ${target.tag} successfully.`
-            )
-            .catch(() => {});
         }
       } catch (error) {
         log(`Error during ghost_ping task: ${error.message}`, "error");

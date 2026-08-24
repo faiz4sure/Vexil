@@ -41,8 +41,18 @@ export default {
       );
       log(`Looking for messages in channel ID: ${targetChannel.id}`, "debug");
 
-      // Get the edited message for this channel
-      const editedMessage = editedMessages.get(targetChannel.id);
+      // Get the edited messages for this channel
+      const channelMessages = editedMessages.get(targetChannel.id);
+
+      // Determine which index to snipe (1-10, default 1)
+      let indexToSnipe = 0; // 0-based index
+      const possibleIndex = args[0] && !isNaN(args[0]) && message.mentions.channels.size === 0 && !client.channels.cache.has(args[0]) ? parseInt(args[0]) : (args[1] && !isNaN(args[1]) ? parseInt(args[1]) : 1);
+      
+      if (possibleIndex >= 1 && possibleIndex <= 10) {
+        indexToSnipe = possibleIndex - 1;
+      }
+
+      const editedMessage = channelMessages ? channelMessages[indexToSnipe] : null;
 
       // If no message was found
       if (!editedMessage) {

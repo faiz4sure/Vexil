@@ -1,8 +1,8 @@
-import Groq from 'groq-sdk';
+import AIManager from "../../utils/AIManager.js";
 
 export default {
     name: 'ask',
-    description: "Asks a question to Groq AI using the llama-3.1-8b-instant model.",
+    description: "Asks a question to the configured default AI model.",
     aliases: ['ai', 'chat'],
     usage: '<query>',
     category: 'AI',
@@ -16,29 +16,13 @@ export default {
             return message.channel.send(`Usage: \`${client.prefix}ask <query>\``);
         }
 
-        const groqApiKey = client.config.ai?.groq_api_key;
-
-        if (!groqApiKey) {
-            return message.channel.send('> ❌ **Error:** Groq API key not found in config.yaml. Please add it under the `ai` section.');
-        }
-
-        const groq = new Groq({
-            apiKey: groqApiKey
-        });
-
         try {
-            const chatCompletion = await groq.chat.completions.create({
-                messages: [
-                    {
-                        role: 'user',
-                        content: query,
-                    },
-                ],
-                model: 'llama-3.1-8b-instant',
-                max_tokens: 1500, // Approximately 2000 words
-            });
+            const defaultProvider = AIManager.getDefaultProvider();
+            if (!AIManager.isAvailable(defaultProvider)) {
+                return message.channel.send(`> ❌ **Error:** Default AI provider \`${defaultProvider}\` is not enabled or its API key is missing in config.yaml.`);
+            }
 
-            let responseContent = chatCompletion.choices[0]?.message?.content;
+            const responseContent = await AIManager.generateContent(query);
 
             if (responseContent) {
                 // Discord message limit is 2000 characters, so we need to split if longer
@@ -51,12 +35,12 @@ export default {
                     await message.channel.send(responseContent);
                 }
             } else {
-                await message.channel.send('> ❌ **Error:** Groq did not return a response.');
+                await message.channel.send(`> ❌ **Error:** AI Provider \`${defaultProvider}\` did not return a response.`);
             }
 
         } catch (error) {
-            console.error('Error communicating with Groq AI:', error);
-            await message.channel.send('> ❌ **Error:** There was an error trying to get a response from Groq AI. Please try again later.');
+            console.error('Error communicating with AI:', error);
+            await message.channel.send(`> ❌ **Error:** There was an error trying to get a response from the AI: ${error.message}`);
         }
     },
 };

@@ -21,7 +21,7 @@ rpc:
 
   # Application ID for Rich Presence (required for assets)
   # 📝 Get yours from: https://discord.com/developers/applications
-  application_id: "1306468377539379241"
+  application_id: "1522275745450168462"
 
   # Default Rich Presence settings
   default:
@@ -61,10 +61,10 @@ rpc:
     # 2. Direct asset IDs: "929325841350000660"
     # 3. External URLs: "https://i.imgur.com/abc.png"
     assets:
-      large_image: "vexil"           # Large image (512x512px recommended)
-      large_text: "Vexil Selfbot"    # Hover text for large image
-      small_image: "thunder"         # Small image (128x128px recommended)
-      small_text: "github.com/faiz4sure"  # Hover text for small image
+      large_image: "vexil" # Large image (512x512px recommended)
+      large_text: "Vexil Selfbot" # Hover text for large image
+      small_image: "thunder" # Small image (128x128px recommended)
+      small_text: "github.com/faiz4sure" # Hover text for small image
 
     # Clickable buttons (max 2 buttons)
     # 📝 Each button needs: label + URL

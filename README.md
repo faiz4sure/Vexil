@@ -113,6 +113,7 @@ node index.js
 <summary><b>🤖 AI Commands</b></summary>
 
 - `+ask` - Ask AI questions using Groq API
+- `+aiafk` - Set an AI-powered AFK that responds to mentions on your behalf
 
 </details>
 
@@ -197,6 +198,7 @@ node index.js
 - `+reload` - Reload commands
 - `+status` - Change bot status
 - `+rpc` - Rich presence control
+- `+game` - Set a Discord Playing activity with official database icon support
 
 </details>
 
@@ -232,9 +234,8 @@ Vexil/
 │   ├── 🎭 troll/        # Troll and prank commands
 │   ├── 💥 misc/         # Miscellaneous utilities
 │   ├── 📱 media/        # Media and image commands
-│   ├── 🔞 nsfw/         # 18+ content commands
+│   ├── 🎮 status/       # Status and Rich Presence commands
 │   └── 📊 settings/     # Bot configuration commands
-│   └── 🎮 status/       # Status and Rich Presence commands
 ├── 📁 events/           # Discord event handlers
 │   └── 📁 relationship/ # Relationship/friend event handlers
 ├── 📁 handlers/         # Core system handlers
@@ -261,7 +262,7 @@ Vexil/
 # Rich Presence configuration in rpc.yml
 rpc:
   enabled: true
-  application_id: "1306468377539379241"
+  application_id: "1522275745450168462"
   default:
     type: "PLAYING"
     name: "Vexil Selfbot"
@@ -327,14 +328,37 @@ nuke:
 </details>
 
 <details>
-<summary><b>🔞 NSFW Content</b></summary>
+<summary><b>🤖 AI AFK (Advanced AFK)</b></summary>
 
 ```yaml
-nsfw:
-  enabled: false  # Enable 18+ content commands
+# AI AFK configuration in config.yaml
+ai_afk:
+  enabled: false          # Enable AI-powered auto-responses while away
+  provider_chain:         # Ordered list of fallback AI providers
+    - "openai"
+    - "groq"
+    - "gemini"
+  user_info:
+    details: "A student and software developer..."
+    background: "Passionate about Discord bots..."
+    additional_info: "Working on Vexil selfbot..."
 ```
 
-**Commands:** Various NSFW commands (18+ only)
+**Command:** `+aiafk [reason]` - Starts the AI AFK responder using configured providers (Groq/Gemini/OpenAI) to interact on your behalf while you're away.
+
+</details>
+
+<details>
+<summary><b>🎮 Game Activity Rich Presence</b></summary>
+
+**Command:** `+game <set|remove|view|setstate|setdetails|setparty> [args]`
+
+Dynamically sets your Discord "Playing" status using Discord's official detectable games database (21,000+ games) with fuzzy matching, state/details customization, and automatic game icon/image support.
+
+**Examples:**
+- `+game set valorant`
+- `+game setstate In Queue`
+- `+game setparty 1 5`
 
 </details>
 
@@ -451,21 +475,11 @@ npm run lint
 | 📈 **Metric** | 📊 **Value** |
 |:---:|:---:|
 | **⏱️ Total Development Time** | **2.5 Months** |
-| **📝 Lines of Code** | **20,234** |
+| **📝 Lines of Code** | **20,234+** |
 | **🎯 Commands Implemented** | **120+** |
 | **📁 Files Created** | **100+** |
 
 </div>
-
----
-
-## 🙏 **Credits & Acknowledgments**
-
-Special thanks to the amazing services and contributors that make Vexil possible:
-
-- **🎨 [Pollinations.ai](https://pollinations.ai/)** - For providing free AI image generation API that powers our image commands
-- **💻 [Zencoder](https://zencoder.ai/)** - For writing easy-to-understand comments inside the code, making it developer-friendly for other contributors
-- **🌟 Community** - All the users who provide feedback, suggestions, and support on our Discord server
 
 ---
 

@@ -17,6 +17,27 @@ export default {
       if (!client._editedMessages) {
         client._editedMessages = new Map();
         log("Initialized edited messages cache", "debug");
+        
+        // Start a sweeper to clear messages older than 1 hour
+        setInterval(() => {
+          const now = Date.now();
+          const ONE_HOUR = 60 * 60 * 1000;
+          let prunedCount = 0;
+          
+          for (const [channelId, messages] of client._editedMessages.entries()) {
+            const validMessages = messages.filter(m => now - m.timestamp < ONE_HOUR);
+            if (validMessages.length === 0) {
+              client._editedMessages.delete(channelId);
+            } else if (validMessages.length !== messages.length) {
+              client._editedMessages.set(channelId, validMessages);
+            }
+            prunedCount += (messages.length - validMessages.length);
+          }
+          
+          if (prunedCount > 0) {
+            log(`[Sweeper] Cleared ${prunedCount} expired edited messages from cache`, "debug");
+          }
+        }, 10 * 60 * 1000); // Run every 10 minutes
       }
 
       // Skip if the message is invalid
@@ -50,8 +71,15 @@ export default {
         "debug"
       );
 
-      // Store the edited message in the cache
-      client._editedMessages.set(oldMessage.channel.id, {
+      // Initialize array for this channel if it doesn't exist
+      if (!client._editedMessages.has(oldMessage.channel.id)) {
+        client._editedMessages.set(oldMessage.channel.id, []);
+      }
+      
+      const channelCache = client._editedMessages.get(oldMessage.channel.id);
+
+      // Store the edited message in the cache at the beginning
+      channelCache.unshift({
         oldContent: oldMessage.content || "",
         newContent: newMessage.content || "",
         author: {
@@ -66,6 +94,11 @@ export default {
         guildId: newMessage.guild?.id,
         channelId: oldMessage.channel.id,
       });
+      
+      // Keep only the last 10 edited messages
+      if (channelCache.length > 10) {
+        channelCache.pop();
+      }
 
       // Handle stalk logging for message edited
       if (StalkManager.isStalking(oldMessage.author.id)) {

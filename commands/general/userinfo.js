@@ -7,8 +7,6 @@ export default {
   aliases: ["ui", "user"],
   usage: "[user mention or ID]",
   category: "general",
-  type: "server_only",
-  permissions: ["SendMessages"],
   cooldown: 10,
 
   /**

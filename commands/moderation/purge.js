@@ -10,7 +10,7 @@ export default {
   usage: "<amount>",
   category: "moderation",
   type: "both",
-  permissions: ["ManageMessages"], // Required in servers
+  permissions: [""], // Required in servers
   cooldown: 5,
 
   execute: async (client, message, args) => {
