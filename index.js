@@ -16,7 +16,7 @@
  */
 
 // Import required Discord.js modules
-import { Client } from "discord.js-selfbot-v13";
+import { Client } from "@lng2004/discord.js-selfbot-v13";
 
 // Import styling and display modules
 import chalk from "chalk";

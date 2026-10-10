@@ -191,7 +191,7 @@ export class RpcManager {
       
       const assetMap = await this.ensureAssetsFetched(client, applicationId);
       
-      const { RichPresence } = await import('discord.js-selfbot-v13')
+      const { RichPresence } = await import('@lng2004/discord.js-selfbot-v13')
       
       const rpc = new RichPresence(client)
         .setApplicationId(applicationId)

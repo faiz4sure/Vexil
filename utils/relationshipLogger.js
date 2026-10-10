@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { WebhookClient } from 'discord.js-selfbot-v13';
+import { WebhookClient } from '@lng2004/discord.js-selfbot-v13';
 import { log, getFormattedDate, loadConfig } from './functions.js';
 
 // Re-export logError from functions.js

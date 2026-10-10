@@ -17,7 +17,7 @@
  * @author faiz4sure
  */
 
-import { RichPresence } from "discord.js-selfbot-v13";
+import { RichPresence } from "@lng2004/discord.js-selfbot-v13";
 
 export default {
   name: "game",

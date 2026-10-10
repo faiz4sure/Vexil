@@ -19,7 +19,7 @@
 import chalk from "chalk";
 import { log } from "../utils/functions.js";
 import RpcManager from "../utils/RpcManager.js";
-import { RichPresence } from "discord.js-selfbot-v13";
+import { RichPresence } from "@lng2004/discord.js-selfbot-v13";
 import { fileURLToPath } from "url";
 import path from "path";
 
